@@ -13,7 +13,7 @@ THREEx.ArToolkitSource = function(parameters){
 		sourceHeight: parameters.sourceHeight !== undefined ? parameters.sourceHeight : 480,
 		// resolution displayed for the source 
 		displayWidth: parameters.displayWidth !== undefined ? parameters.displayWidth : 640,
-		displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480,
+		displayHeight: parameters.displayHeight !== undefined ? parameters.displayHeight : 480
 	}
 
 	this.ready = false

@@ -14,7 +14,7 @@ THREEx.ArMarkerControls = function(context, object3d, parameters){
 		// value of the barcode - IIF type='barcode'
 		barcodeValue : parameters.barcodeValue !== undefined ? parameters.barcodeValue : null,
 		// change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix',
+		changeMatrixMode : parameters.changeMatrixMode !== undefined ? parameters.changeMatrixMode : 'modelViewMatrix'
 	}
 
 	// sanity check
