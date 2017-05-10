@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<title>WebGL 3D Model Viewer Using three.js</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<script src="three.js"></script>
+		<script src="Detector.js"></script>
+		<script src="OrbitControls.js"></script>
+		<script src="OBJLoader.js"></script>
+		<script src="MTLLoader.js"></script>
+		<script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/TrackballControls.js"></script>
+		
+		<style>
+			body {
+			margin: 0px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		
+		
+		
+		<div id="container"></div><script>
+			(function() {
+				
+				video = document.createElement( 'video' );
+				video.id = 'monitor';
+				
+				video.width=window.innerWidth;
+				video.height=window.innerHeight
+				document.body.appendChild(video)
+				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+				window.URL = window.URL || window.webkitURL;
+				
+				var camvideo = document.getElementById('monitor');
+				
+				if (!navigator.getUserMedia) 
+				{
+					alert(
+					'Sorry. <code>navigator.getUserMedia()</code> is not available.');
+					} else {
+					navigator.getUserMedia({video: true, audio: true}, gotStream, noStream);
+				}
+				
+				function gotStream(stream) 
+				{
+					if (window.URL) 
+					{   camvideo.src = window.URL.createObjectURL(stream);   } 
+					else // Opera
+					{   camvideo.src = stream;   }
+					
+					camvideo.onerror = function(e) 
+					{   stream.stop();   };
+					
+					stream.onended = noStream;
+				}
+				
+				function noStream(e) 
+				{
+					var msg = 'No camera available.';
+					if (e.code == 1) 
+					{   msg = 'User denied access to use camera.';   }
+					alert(msg);
+				}
+				
+				
+				var container;
+				var camera, controls, scene, renderer;
+				var cross;
+				init();
+				//animate();
+				function init() {
+					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+					camera.position.z = 500;
+					controls = new THREE.TrackballControls( camera );
+					controls.rotateSpeed = 1.0;
+					controls.zoomSpeed = 1.2;
+					controls.panSpeed = 0.8;
+					controls.noZoom = false;
+					controls.noPan = false;
+					controls.staticMoving = true;
+					controls.dynamicDampingFactor = 0.3;
+					controls.keys = [ 65, 83, 68 ];
+					controls.addEventListener( 'change', render );
+					// world
+					scene = new THREE.Scene();
+					
+					/*
+						var geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
+						var material =  new THREE.MeshPhongMaterial( { color:0xffffff, shading: THREE.FlatShading } );
+						for ( var i = 0; i < 500; i ++ ) {
+						var mesh = new THREE.Mesh( geometry, material );
+						mesh.position.x = ( Math.random() - 0.5 ) * 1000;
+						mesh.position.y = ( Math.random() - 0.5 ) * 1000;
+						mesh.position.z = ( Math.random() - 0.5 ) * 1000;
+						mesh.updateMatrix();
+						mesh.matrixAutoUpdate = false;
+						scene.add( mesh );
+						}
+					*/
+					var loader = new THREE.JSONLoader();
+					
+					// load a resource
+					loader.load(
+					
+					// resource URL
+					'buddha2.json',
+					
+					// Function when resource is loaded
+					function ( geometry, materials ) {
+						
+						var material = materials[ 0 ];
+						var object = new THREE.Mesh( geometry, material );
+						
+						scene.add( object );
+						/* Renderer */
+						// lights
+						
+											
+						ambient = new THREE.AmbientLight(0xffffff, 1.0);
+						scene.add(ambient);
+						
+						keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+						keyLight.position.set(-100, 0, 100);
+						scene.add(keyLight);
+						
+						fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+						fillLight.position.set(100, 0, 100);
+						scene.add(fillLight);
+						
+						backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+						backLight.position.set(100, 0, -100).normalize();
+						scene.add(backLight);
+						// renderer
+						/*renderer = new THREE.WebGLRenderer( { antialias: false } );
+							
+							renderer.setPixelRatio( window.devicePixelRatio );
+							renderer.setSize( window.innerWidth, window.innerHeight );
+							container = document.getElementById( 'container' );
+							renderer.setClearColor(0x333333);
+						container.appendChild( renderer.domElement );*/
+						
+						
+							
+						renderer = new THREE.WebGLRenderer();
+						renderer.setPixelRatio(window.devicePixelRatio);
+						renderer.setSize(window.innerWidth, window.innerHeight);
+						//renderer.setClearColor(new THREE.Color("hsl(0, 0%, 10%)"));
+						renderer.setClearColor(0x333333);
+						container = document.getElementById( 'container' );
+						container.appendChild( renderer.domElement );
+							controls = new THREE.OrbitControls( camera, renderer.domElement );
+							controls.target.set( 0, 12, 0 );
+							camera.position.set( 200, 180, 28 );
+							controls.update();
+						///////////
+						// VIDEO //
+						///////////
+						
+						// create the video element
+						// video = document.createElement( 'video' );
+						// // video.id = 'video';
+						// // video.type = ' video/ogg; codecs="theora, vorbis" ';
+						// video.src = "project.mp4";
+						// video.load(); // must call after setting/changing source
+						// video.play();
+						
+						// alternative method -- 
+						// create DIV in HTML:
+						// <video id="myVideo" autoplay style="display:none">
+						//      <source src="videos/sintel.ogv" type='video/ogg; codecs="theora, vorbis"'>
+						// </video>
+						// and set JS variable:
+						// video = document.getElementById( 'myVideo' );
+						
+						videoImage = document.createElement( 'canvas' );
+						videoImage.width = window.innerWidth;
+						videoImage.height = window.innerHeight;
+						
+						videoImageContext = videoImage.getContext( '2d' );
+						// background color if no video present
+						videoImageContext.fillStyle = '#000000';
+						videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+						
+						videoTexture = new THREE.Texture( videoImage );
+						videoTexture.minFilter = THREE.LinearFilter;
+						videoTexture.magFilter = THREE.LinearFilter;
+						
+						movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture } );
+						// the geometry on which the movie will be displayed;
+						//      movie image will be scaled to fit these dimensions.
+						movieGeometry = new THREE.PlaneGeometry( 2,2,0 );
+						movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+						// movieScreen.position.set(0,50,0);
+						movieScreen.material.depthTest = false;
+						movieScreen.material.depthWrite = false;
+						
+						/////////////////////////////////////////////////////////////////////////////////
+						//          var texture = THREE.ImageUtils.loadTexture( './1.jpg' );
+						//  backgroundMesh = new THREE.Mesh(
+						//     new THREE.PlaneGeometry(2, 2, 0),
+						//     new THREE.MeshBasicMaterial({
+						//         map: texture
+						//     }));
+						
+						// backgroundMesh .material.depthTest = false;
+						// backgroundMesh .material.depthWrite = false;
+						
+						// Create your background scene
+						backgroundScene = new THREE.Scene();
+						backgroundCamera = new THREE.Camera();
+						
+						backgroundScene .add(backgroundCamera );
+						backgroundScene .add(movieScreen );
+						
+						//
+						window.addEventListener( 'resize', onWindowResize, false );
+						//
+						render();
+						animate();
+					})
+					
+				}
+				function onWindowResize() {
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+					renderer.setSize( window.innerWidth, window.innerHeight );
+					//controls.handleResize();
+					render();
+				}
+				function animate() {
+					requestAnimationFrame( animate );
+					
+					render();       
+					
+					
+					controls.update();
+				}
+				function render() {
+					renderer.clear();
+					if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
+					{
+						videoImageContext.drawImage( video, 0, 0 );
+						if ( videoTexture ) 
+						videoTexture.needsUpdate = true;
+					}
+					
+					renderer.autoClear = false;
+					
+					renderer.render(backgroundScene , backgroundCamera );
+					renderer.render(scene, camera);
+					
+				}
+				
+				
+				
+			})();
+		</script>
+		
+	</body>
+</html>						
