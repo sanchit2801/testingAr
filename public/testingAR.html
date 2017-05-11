@@ -145,7 +145,7 @@ navigator.mediaDevices.enumerateDevices()
 					*/
 					// world
 					
-					controls = new THREE.SwipeControls( camera );
+					
 					scene = new THREE.Scene();
 					
 					/*
@@ -212,10 +212,11 @@ navigator.mediaDevices.enumerateDevices()
 						renderer.setClearColor(0x333333);
 						container = document.getElementById( 'container' );
 						container.appendChild( renderer.domElement );
-							controls = new THREE.OrbitControls( camera, renderer.domElement );
-							controls.target.set( 0, 12, 0 );
-							camera.position.set( 200, 180, 28 );
-							controls.update();
+							//controls = new THREE.OrbitControls( camera, renderer.domElement );
+							//controls.target.set( 0, 12, 0 );
+							//camera.position.set( 200, 180, 28 );
+							//controls.update();
+							controls = new THREE.SwipeControls( camera );
 						///////////
 						// VIDEO //
 						///////////
