@@ -8,6 +8,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<script src="three.js"></script>
+		<script src="swipe.js"></script>
 		<script src="Detector.js"></script>
 		<script src="OrbitControls.js"></script>
 		<script src="OBJLoader.js"></script>
@@ -35,7 +36,7 @@
 				video.width=window.innerWidth;
 				video.height=window.innerHeight
 				document.body.appendChild(video)
-				/*navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+				navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 				window.URL = window.URL || window.webkitURL;
 				
 				var camvideo = document.getElementById('monitor');
@@ -68,59 +69,7 @@
 					{   msg = 'User denied access to use camera.';   }
 					alert(msg);
 				}
-				*/
-                 
-				function handleSuccess(stream) {
-  window.stream = stream; // make stream available to browser console
-  video.srcObject = stream;
-}
-
-function handleError(error) {
-  console.log('navigator.getUserMedia error: ', error);
-}
-
-var DEVICES = [];
-var final = null;
-navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-
-        var arrayLength = devices.length;
-        for (var i = 0; i < arrayLength; i++)
-        {
-            var tempDevice = devices[i];
-            //FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
-            //AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
-            if (tempDevice.kind == "videoinput")
-            {
-                DEVICES.push(tempDevice);
-                if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
-                    {final = tempDevice;}
-            }
-        }
-
-        var totalCameras = DEVICES.length;
-        //If couldnt find a suitable camera, pick the last one... you can change to what works for you
-        if(final == null)
-        {
-            //console.log("no suitable camera, getting the last one");
-            final = DEVICES[totalCameras-1];
-        };
-
-        //Set the constraints and call getUserMedia
-        var constraints = {
-        audio: false, 
-        video: {
-            deviceId: {exact: final.deviceId}
-            }
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints).
-        then(handleSuccess).catch(handleError);
-
-    })
-    .catch(function(err) {
-        console.log(err.name + ": " + err.message);
-});
+				
 				
 				var container;
 				var camera, controls, scene, renderer;
@@ -130,7 +79,8 @@ navigator.mediaDevices.enumerateDevices()
 				function init() {
 					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 					camera.position.z = 500;
-					controls = new THREE.TrackballControls( camera );
+					
+					/*controls = new THREE.TrackballControls( camera );
 					controls.rotateSpeed = 1.0;
 					controls.zoomSpeed = 1.2;
 					controls.panSpeed = 0.8;
@@ -140,6 +90,8 @@ navigator.mediaDevices.enumerateDevices()
 					controls.dynamicDampingFactor = 0.3;
 					controls.keys = [ 65, 83, 68 ];
 					controls.addEventListener( 'change', render );
+					*/
+					controls = new THREE.SwipeControls( camera );
 					// world
 					scene = new THREE.Scene();
 					
