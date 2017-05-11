@@ -69,7 +69,7 @@
 					alert(msg);
 				}
 				*/
-                
+                ACK 
 				function handleSuccess(stream) {
   window.stream = stream; // make stream available to browser console
   video.srcObject = stream;
@@ -128,15 +128,15 @@ navigator.mediaDevices.enumerateDevices()
 				init();
 				//animate();
 				function init() {
-					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
-					camera.position.z = 500;
+					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 3000 );
+					camera.position.z = 1000;
 					controls = new THREE.TrackballControls( camera );
 					controls.rotateSpeed = 1.0;
 					controls.zoomSpeed = 1.2;
 					controls.panSpeed = 0.8;
 					controls.noZoom = false;
 					controls.noPan = false;
-					controls.staticMoving = true;
+					controls.staticMoving = false;
 					controls.dynamicDampingFactor = 0.3;
 					controls.keys = [ 65, 83, 68 ];
 					controls.addEventListener( 'change', render );
