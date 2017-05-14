@@ -285,18 +285,19 @@
 					})
 					
 				}
-				function onWindowResize() {
-					renderer.clear();
-					scene = "";
-					init();
+				
+				function onWindowResize(event) {
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+					
+					renderer.setSize( window.innerWidth, window.innerHeight );
+					//controls.handleResize();
+					render();
 				}
 				
 				function animate() {
 					requestAnimationFrame( animate );
-					
 					render();       
-					
-					
 					controls.update();
 				}
 				
