@@ -286,12 +286,11 @@
 					
 				}
 				function onWindowResize() {
-					camera.aspect = window.innerWidth / window.innerHeight;
-					camera.updateProjectionMatrix();
-					renderer.setSize( window.innerWidth, window.innerHeight );
-					//controls.handleResize();
-					render();
+					renderer.clear();
+					scene = "";
+					init();
 				}
+				
 				function animate() {
 					requestAnimationFrame( animate );
 					
@@ -300,6 +299,7 @@
 					
 					controls.update();
 				}
+				
 				function render() {
 					renderer.clear();
 					if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
@@ -309,7 +309,7 @@
 						videoTexture.needsUpdate = true;
 					}
 					
-					renderer.autoClear = false;
+					renderer.autoClear = true;
 					
 					renderer.render(backgroundScene , backgroundCamera );
 					renderer.render(scene, camera);
