@@ -105,7 +105,7 @@
 					controls.panSpeed = 0.8;
 					controls.noZoom = false;
 					controls.noPan = false;
-					controls.staticMoving = true;
+					//controls.staticMoving = true;
 					controls.dynamicDampingFactor = 0.3;
 					controls.keys = [ 65, 83, 68 ];
 					controls.addEventListener( 'change', render );
@@ -258,9 +258,9 @@
 					camera.aspect = window.innerWidth / window.innerHeight;
 					camera.updateProjectionMatrix();
 					renderer.setSize( window.innerWidth, window.innerHeight );
-					alert(camera.aspect);
-					alert("window.innerWidth : " + window.innerWidth);
-					alert("window.innerHeight : " + window.innerHeight);
+					//alert(camera.aspect);
+					//alert("window.innerWidth : " + window.innerWidth);
+					//alert("window.innerHeight : " + window.innerHeight);
 					
 					controls.update();
 					render();
@@ -285,10 +285,8 @@
 					}
 					
 					renderer.autoClear = false;
-					
 					renderer.render(backgroundScene , backgroundCamera );
 					renderer.render(scene, camera);
-					
 					
 				}
 				
