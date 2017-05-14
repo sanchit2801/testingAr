@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-		<title>WEB AR</title>
+		<title>WB AR</title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -287,7 +287,11 @@
 				}
 				
 				function onWindowResize(event) {
-					 event.preventDefault();
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+					renderer.setSize( window.innerWidth, window.innerHeight );
+					controls.update();
+					render();
 				}
 				
 				function animate() {
