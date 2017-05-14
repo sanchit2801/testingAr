@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-		<title>WB AR</title>
+		<title>WebGL 3D Model Viewer Using three.js</title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -287,20 +287,23 @@
 				}
 				
 				function onWindowResize() {
+					
 					camera.aspect = window.innerWidth / window.innerHeight;
 					camera.updateProjectionMatrix();
-					
 					renderer.setSize( window.innerWidth, window.innerHeight );
 					//controls.handleResize();
 					render();
+				
 				}
 				
 				function animate() {
 					requestAnimationFrame( animate );
+					
 					render();       
+					
+					
 					controls.update();
 				}
-				
 				function render() {
 					renderer.clear();
 					if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
@@ -310,7 +313,7 @@
 						videoTexture.needsUpdate = true;
 					}
 					
-					renderer.autoClear = true;
+					renderer.autoClear = false;
 					
 					renderer.render(backgroundScene , backgroundCamera );
 					renderer.render(scene, camera);
