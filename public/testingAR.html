@@ -2,7 +2,7 @@
 <html>
 	<head>
 		
-		<title>WebGL 3D Model Viewer Using three.js</title>
+		<title>WEB AR</title>
 		
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -287,14 +287,7 @@
 				}
 				
 				function onWindowResize(event) {
-					console.log('in windowresize');
-					console.log(event);
-					camera.aspect = window.innerWidth / window.innerHeight;
-					camera.updateProjectionMatrix();
-					
-					renderer.setSize( window.innerWidth, window.innerHeight );
-					//controls.handleResize();
-					render();
+					 event.preventDefault();
 				}
 				
 				function animate() {
