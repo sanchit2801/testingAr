@@ -268,8 +268,13 @@
 					//alert("window.innerHeight : " + window.innerHeight);
 					
 					//controls.update();
+					scene.clear();
 					renderer.clear();
+					while(container.firstChild) {
+						container.removeChild(container.firstChild);
+					}
 					init();
+					
 				}
 				
 				function animate() {
