@@ -259,7 +259,10 @@
 					camera.updateProjectionMatrix();
 					renderer.setSize( window.innerWidth, window.innerHeight );
 					alert(camera.aspect);
-					//controls.update();
+					alert("window.innerWidth : " + window.innerWidth);
+					alert("window.innerHeight : " + window.innerHeight);
+					
+					controls.update();
 					render();
 				
 				}
