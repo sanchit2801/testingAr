@@ -37,20 +37,20 @@
 				video.height=window.innerHeight
 				document.body.appendChild(video)
 				/*navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-				window.URL = window.URL || window.webkitURL;
-				
-				var camvideo = document.getElementById('monitor');
-				
-				if (!navigator.getUserMedia) 
-				{
+					window.URL = window.URL || window.webkitURL;
+					
+					var camvideo = document.getElementById('monitor');
+					
+					if (!navigator.getUserMedia) 
+					{
 					alert(
 					'Sorry. <code>navigator.getUserMedia()</code> is not available.');
 					} else {
 					navigator.getUserMedia({video: true, audio: true}, gotStream, noStream);
-				}
-				
-				function gotStream(stream) 
-				{
+					}
+					
+					function gotStream(stream) 
+					{
 					if (window.URL) 
 					{   camvideo.src = window.URL.createObjectURL(stream);   } 
 					else // Opera
@@ -60,68 +60,68 @@
 					{   stream.stop();   };
 					
 					stream.onended = noStream;
-				}
-				
-				function noStream(e) 
-				{
+					}
+					
+					function noStream(e) 
+					{
 					var msg = 'No camera available.';
 					if (e.code == 1) 
 					{   msg = 'User denied access to use camera.';   }
 					alert(msg);
-				}
+					}
 				*/
-                 
+				
 				function handleSuccess(stream) {
-  window.stream = stream; // make stream available to browser console
-  video.srcObject = stream;
-}
-
-function handleError(error) {
-  console.log('navigator.getUserMedia error: ', error);
-}
-
-var DEVICES = [];
-var final = null;
-navigator.mediaDevices.enumerateDevices()
-    .then(function(devices) {
-
-        var arrayLength = devices.length;
-        for (var i = 0; i < arrayLength; i++)
-        {
-            var tempDevice = devices[i];
-            //FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
-            //AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
-            if (tempDevice.kind == "videoinput")
-            {
-                DEVICES.push(tempDevice);
-                if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
-                    {final = tempDevice;}
-            }
-        }
-
-        var totalCameras = DEVICES.length;
-        //If couldnt find a suitable camera, pick the last one... you can change to what works for you
-        if(final == null)
-        {
-            //console.log("no suitable camera, getting the last one");
-            final = DEVICES[totalCameras-1];
-        };
-
-        //Set the constraints and call getUserMedia
-        var constraints = {
-        audio: false, 
-        video: {
-            deviceId: {exact: final.deviceId}
-            }
-        };
-
-        navigator.mediaDevices.getUserMedia(constraints).
-        then(handleSuccess).catch(handleError);
-
-    })
-    .catch(function(err) {
-        console.log(err.name + ": " + err.message);
-});
+					window.stream = stream; // make stream available to browser console
+					video.srcObject = stream;
+				}
+				
+				function handleError(error) {
+					console.log('navigator.getUserMedia error: ', error);
+				}
+				
+				var DEVICES = [];
+				var final = null;
+				navigator.mediaDevices.enumerateDevices()
+				.then(function(devices) {
+					
+					var arrayLength = devices.length;
+					for (var i = 0; i < arrayLength; i++)
+					{
+						var tempDevice = devices[i];
+						//FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
+						//AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
+						if (tempDevice.kind == "videoinput")
+						{
+							DEVICES.push(tempDevice);
+							if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
+							{final = tempDevice;}
+						}
+					}
+					
+					var totalCameras = DEVICES.length;
+					//If couldnt find a suitable camera, pick the last one... you can change to what works for you
+					if(final == null)
+					{
+						//console.log("no suitable camera, getting the last one");
+						final = DEVICES[totalCameras-1];
+					};
+					
+					//Set the constraints and call getUserMedia
+					var constraints = {
+						audio: false, 
+						video: {
+							deviceId: {exact: final.deviceId}
+						}
+					};
+					
+					navigator.mediaDevices.getUserMedia(constraints).
+					then(handleSuccess).catch(handleError);
+					
+				})
+				.catch(function(err) {
+					console.log(err.name + ": " + err.message);
+				});
 				
 				var container;
 				var camera, controls, scene, renderer;
@@ -179,7 +179,7 @@ navigator.mediaDevices.enumerateDevices()
 						/* Renderer */
 						// lights
 						
-											
+						
 						ambient = new THREE.AmbientLight(0xffffff, 1.0);
 						scene.add(ambient);
 						
@@ -204,7 +204,7 @@ navigator.mediaDevices.enumerateDevices()
 						container.appendChild( renderer.domElement );*/
 						
 						
-							
+						
 						renderer = new THREE.WebGLRenderer();
 						renderer.setPixelRatio(window.devicePixelRatio);
 						renderer.setSize(window.innerWidth, window.innerHeight);
@@ -212,11 +212,11 @@ navigator.mediaDevices.enumerateDevices()
 						renderer.setClearColor(0x333333);
 						container = document.getElementById( 'container' );
 						container.appendChild( renderer.domElement );
-							controls = new THREE.OrbitControls( camera, renderer.domElement );
-							controls.target.set( 0, 12, 0 );
-							camera.position.set( 200, 180, 28 );
-							controls.update();
-							//controls = new THREE.SwipeControls( camera );
+						controls = new THREE.OrbitControls( camera, renderer.domElement );
+						controls.target.set( 0, 12, 0 );
+						camera.position.set( 200, 180, 28 );
+						controls.update();
+						//controls = new THREE.SwipeControls( camera );
 						///////////
 						// VIDEO //
 						///////////
