@@ -241,6 +241,8 @@
 						controls = new THREE.OrbitControls( camera, renderer.domElement );
 						controls.target.set( 0, 12, 0 );
 						camera.position.set( 200, 180, 28 );
+						controls.minPolarAngle = Math.PI/2;
+						controls.maxPolarAngle = Math.PI/2;
 						controls.update();
 						//controls = new THREE.SwipeControls( camera );
 						///////////
