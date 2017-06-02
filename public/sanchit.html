@@ -506,13 +506,13 @@
 						object.position.add(direction);
 					}
 					else if(leftClicked){
-						var direction = new THREE.Vector3(-6, 0, 0); // amount to move per frame
+						var direction = new THREE.Vector3(6, 0, 0); // amount to move per frame
 						leftClicked = false;
 						object.position.add(direction);
 					}
 					else if(rightClicked){
 						console.log('right');
-						var direction = new THREE.Vector3(6, 0, 0); // amount to move per frame
+						var direction = new THREE.Vector3(-6, 0, 0); // amount to move per frame
 						rightClicked = false;
 						object.position.add(direction);
 					}else{
