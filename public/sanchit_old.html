@@ -465,6 +465,7 @@
 						if (tempDevice.kind == "videoinput")
 						{
 							DEVICES.push(tempDevice);
+							alert(JSON.stringify(tempDevice));
 							if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
 							{final = tempDevice;}
 						}
