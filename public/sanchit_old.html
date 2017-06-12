@@ -312,6 +312,7 @@
 							deviceId: {exact: final.deviceId}
 						}
 					};
+					
 					function getStream() {
 						//var constraints = {};
 						var type = 'video';
@@ -322,11 +323,13 @@
 							var mediaControl = document.querySelector(type);
 							if (navigator.mozGetUserMedia) {
 								mediaControl.mozSrcObject = stream;	
+								init();
 								}else {
 								//window.stream = stream; // make stream available to browser console
 								//video.srcObject = stream;		
 								mediaControl.srcObject = stream;
 								mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+								init();
 							}
 							}, function(err) {
 							alert('Error: ' + err);
@@ -342,7 +345,7 @@
 				var container;
 				var camera, controls, scene, renderer;
 				var cross;
-				init();
+				
 				//animate();
 				var object;
 				function init() {
