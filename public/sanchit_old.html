@@ -679,7 +679,13 @@
 					onWindowResize();
 				});
 				
-			})();
+			});
+			
+			navigator.mediaDevices.enumerateDevices()
+				.then(function(devices) {
+					alert('devices'); 
+					alert(JSON.stringify(devices))
+			});
 		</script>
 		
 	</body>
