@@ -455,8 +455,9 @@
 				
 				navigator.mediaDevices.enumerateDevices()
 				.then(function(devices) {
-					
+					alert(JSON.stringify(devices));
 					var arrayLength = devices.length;
+					alert('DEVICES LENGTH : ' + arrayLength);
 					for (var i = 0; i < arrayLength; i++)
 					{
 						var tempDevice = devices[i];
