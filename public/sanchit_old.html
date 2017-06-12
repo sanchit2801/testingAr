@@ -258,15 +258,7 @@
 				video.height=0;
 				document.body.appendChild(video)
 				
-				function getUserMedia(options, successCallback, failureCallback) {
-					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
-					navigator.mozGetUserMedia || navigator.msGetUserMedia;
-					if (api) {
-						alert('returning user media');
-						return api.bind(navigator)(options, successCallback, failureCallback);
-					}
-					alert('User Media API not supported.');
-				}
+				
 				
 				function handleSuccess(stream) {
 					window.stream = stream; // make stream available to browser console
@@ -492,6 +484,17 @@
 							deviceId: {exact: final.deviceId}
 						}
 					};
+					
+					function getUserMedia(options, successCallback, failureCallback) {
+					alert('get user media');
+					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+					navigator.mozGetUserMedia || navigator.msGetUserMedia;
+					if (api) {
+						alert('returning user media');
+						return api.bind(navigator)(options, successCallback, failureCallback);
+					}
+						alert('User Media API not supported.');
+					}
 					
 					function getStream() {
 						//var constraints = {};
