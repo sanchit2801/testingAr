@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<title>WEB AR</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	</head>
+	<body>
+		
+		
+		
+		<script>	
+			
+			navigator.mediaDevices.enumerateDevices()
+			.then(function(devices) {
+				alert('devices'); 
+				alert(JSON.stringify(devices))
+			});
+			
+		</script>
+		
+	</body>
+</html>						
