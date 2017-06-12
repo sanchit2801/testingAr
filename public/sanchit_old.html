@@ -275,9 +275,12 @@
 					console.log('navigator.getUserMedia error: ', error);
 				}
 				
+
+				
 				var DEVICES = [];
 				var final = null;
-				/*navigator.mediaDevices.enumerateDevices()
+				var constraints;
+				navigator.mediaDevices.enumerateDevices()
 					.then(function(devices) {
 					
 					var arrayLength = devices.length;
@@ -303,27 +306,30 @@
 					};
 					
 					//Set the constraints and call getUserMedia
-					var constraints = {
+					constraints = {
 					audio: false, 
 					video: {
 					deviceId: {exact: final.deviceId}
 					}
 					};
 					
-					navigator.mediaDevices.getUserMedia(constraints).
+					/*navigator.mediaDevices.getUserMedia(constraints).
 					then(handleSuccess).catch(handleError);
 					
 					})
 					.catch(function(err) {
 					console.log(err.name + ": " + err.message);
 					});
-					
-				*/
+					*/
+				})	
+				
 				
 				function getStream() {
-					var constraints = {};
+					//var constraints = {};
 					var type = 'video';
-					constraints['video'] = true;
+					//constraints['video'] = true;
+					//constraints['audio'] = false;
+					
 					getUserMedia(constraints, function(stream) {
 						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
