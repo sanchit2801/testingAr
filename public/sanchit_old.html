@@ -241,6 +241,7 @@
 		
 		<script>
 			(function() {
+				alert('initiation');
 				var seletedItem = 'sofa';
 				var modelMap = {
 					sofa:"models/RedSofa/RedSofa.js",
@@ -261,6 +262,7 @@
 					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
 					navigator.mozGetUserMedia || navigator.msGetUserMedia;
 					if (api) {
+						alert('returning user media');
 						return api.bind(navigator)(options, successCallback, failureCallback);
 					}
 					alert('User Media API not supported.');
@@ -453,8 +455,11 @@
 					
 				}
 				
+				alert('navigator'); 
+				
 				navigator.mediaDevices.enumerateDevices()
 				.then(function(devices) {
+					alert('devices'); 
 					alert(JSON.stringify(devices));
 					var arrayLength = devices.length;
 					alert('DEVICES LENGTH : ' + arrayLength);
