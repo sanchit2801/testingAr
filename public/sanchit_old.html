@@ -506,13 +506,13 @@
 							var mediaControl = document.querySelector(type);
 							if (navigator.mozGetUserMedia) {
 								mediaControl.mozSrcObject = stream;	
-								init();
+								i//init();
 								}else {
 								//window.stream = stream; // make stream available to browser console
 								//video.srcObject = stream;		
 								mediaControl.srcObject = stream;
 								mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
-								init();
+								
 							}
 							}, function(err) {
 							alert('Error: ' + err);
@@ -522,6 +522,7 @@
 					getStream();
 				})	
 				
+				init();
 				
 				
 				function updateYPos() {
