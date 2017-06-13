@@ -382,6 +382,7 @@
 						// the geometry on which the movie will be displayed;
 						//      movie image will be scaled to fit these dimensions.
 						movieGeometry = new THREE.PlaneGeometry( 2,2,0 );
+						movieGeometry.rotation.x = - 180 * ( Math.PI / 180 );
 						movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
 						// movieScreen.position.set(0,50,0);
 						movieScreen.material.depthTest = false;
@@ -438,6 +439,8 @@
 					init();
 					
 				}
+				
+				var moz = 1;
 				
 				/*
 					navigator.mediaDevices.enumerateDevices()
@@ -581,7 +584,7 @@
 					}
 					
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
-						alert('video');
+						//alert('video');
 						videoImageContext.drawImage(video,0, 0);
 						if (videoTexture)
 							videoTexture.needsUpdate = true;
