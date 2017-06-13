@@ -259,18 +259,6 @@
 				document.body.appendChild(video)
 				
 				
-				
-				function handleSuccess(stream) {
-					window.stream = stream; // make stream available to browser console
-					video.srcObject = stream;
-				}
-				
-				function handleError(error) {
-					console.log('navigator.getUserMedia error: ', error);
-				}
-				
-				
-				
 				var DEVICES = [];
 				var final = null;
 				var constraints = {};
@@ -282,6 +270,9 @@
 				
 				//animate();
 				var object;
+				
+				
+				
 				function init() {
 					camera = "";
 					controls = "";
@@ -547,16 +538,17 @@
 							//mediaControl.mozSrcObject = stream;
 							alert('moz');
 							window.stream = stream; // make stream available to browser console
-							//video.mozSrcObject = stream;
-							video.srcObject = stream;
-							video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+							video.mozSrcObject = stream;
+							//video.srcObject = stream;
+							//video.src = (window.URL || window.webkitURL).createObjectURL(stream);
 
 						} else {
-							alert('chrome');
+							//alert('chrome');
 							window.stream = stream; // make stream available to browser console
 							video.srcObject = stream;
 							video.src = (window.URL || window.webkitURL).createObjectURL(stream);
 						}
+						init();
 						}, function(err) {
 						alert('Error: ' + err);
 					});
@@ -564,7 +556,7 @@
 				
 				getStream('video');
 				
-				init();
+			
 				
 				
 				function updateYPos() {
@@ -616,7 +608,7 @@
 					}
 					
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
-						//console.log(video);
+						alert('video');
 						videoImageContext.drawImage(video,0, 0);
 						
 						if (videoTexture)
@@ -633,84 +625,6 @@
 				var downTimer;
 				var leftTimer;
 				var rightTimer;
-				
-				$('#upButton').on('touchstart mousedown', function () {
-					upClicked = true;
-					upTimer = setInterval(function () {
-						console.log('up --> mousedown');
-						upClicked = true;
-						animate();
-					}, 500);
-				});
-				
-				$('#upButton').on('touchend mouseup', function () {
-					console.log('s1');
-					upClicked = false;
-					clearInterval(upTimer);
-				});
-				
-				$('#downButton').on('touchstart mousedown', function () {
-					console.log('s');
-					downClicked = true;
-					downTimer = setInterval(function () {
-						downClicked = true;
-						animate();
-					}, 500);
-					
-					
-				});
-				
-				$('#downButton').on('touchend mouseup', function () {
-					console.log('s1');
-					downClicked = false;
-					clearInterval(downTimer);
-				});
-				
-				$('#leftButton').on('touchstart mousedown', function () {
-					console.log('s');
-					leftClicked = true;
-					leftTimer = setInterval(function () {
-						leftClicked = true;
-						animate();
-					}, 500);
-					
-					
-				});
-				
-				$('#leftButton').on('touchend mouseup', function () {
-					console.log('s1');
-					leftClicked = false;
-					clearInterval(leftTimer);
-				});
-				
-				$('#rightButton').on('touchstart mousedown', function () {
-					console.log('s');
-					rightClicked = true;
-					rightTimer = setInterval(function () {
-						rightClicked = true;
-						animate();
-					},500);
-					
-					
-				});
-				
-				$('#rightButton').on('touchend mouseup', function () {
-					console.log('s1');
-					rightClicked = false;
-					clearInterval(rightTimer);
-				});
-				
-				
-				function triggerArrowKeys(val) {
-					leftArrowKey = 37
-					upArrowKey = 38
-					rightArrowKey = 39
-					downArrowKey = 40
-					
-					e = jQuery.Event("keydown");
-					e.which = val;
-					$('#container').trigger(e);
-				}
 				
 				$(document).on('click','.model',function(evt){
 					var clickedBtnID = $(this).attr('id');
