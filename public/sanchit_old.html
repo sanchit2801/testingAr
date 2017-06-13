@@ -537,22 +537,22 @@
 						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
 							mediaControl.mozSrcObject = stream;
-						}else {
+							}else {
 							mediaControl.srcObject = stream;
 							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
 						}
 						init();
-					},function(err) {
-							alert('Error: ' + err);
-						});
-					};
-					
-					getStream('video');
-					
-					
-					
-					
-					function updateYPos() {
+						},function(err) {
+						alert('Error: ' + err);
+					});
+				};
+				
+				getStream('video');
+				
+				
+				
+				
+				function updateYPos() {
 					//var direction = new THREE.Vector3(0, .1, 0); // amount to move per frame
 					//object.position.add(direction);
 					//animate();
@@ -565,30 +565,7 @@
 				
 				function animate() {
 					
-					if(upClicked){
-						var direction = new THREE.Vector3(0, 6, 0); // amount to move per frame
-						upClicked = false;
-						object.position.add(direction);
-					}
-					else if(downClicked){
-						var direction = new THREE.Vector3(0, -6, 0); // amount to move per frame
-						downClicked = false;
-						object.position.add(direction);
-					}
-					else if(leftClicked){
-						var direction = new THREE.Vector3(6, 0, 0); // amount to move per frame
-						leftClicked = false;
-						object.position.add(direction);
-					}
-					else if(rightClicked){
-						console.log('right');
-						var direction = new THREE.Vector3(-6, 0, 0); // amount to move per frame
-						rightClicked = false;
-						object.position.add(direction);
-						}else{
-						
-					}
-					
+									
 					requestAnimationFrame(animate);
 					render();
 					controls.update();
@@ -596,16 +573,25 @@
 				}
 				
 				function render() {
+					alert('render');
 					if (renderer) {
 						renderer.clear();
 					}
 					
+					alert(JSON.stringify(video.readyState));
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
 						alert('video');
 						videoImageContext.drawImage(video,0, 0);
 						
 						if (videoTexture)
-						videoTexture.needsUpdate = true;
+							videoTexture.needsUpdate = true;
+					}else{
+						alert('IN ELSE OF video.readyState');
+						videoImageContext.drawImage(video,0, 0);
+						
+						if (videoTexture)
+							videoTexture.needsUpdate = true;
+						
 					}
 					
 					renderer.autoClear = false;
