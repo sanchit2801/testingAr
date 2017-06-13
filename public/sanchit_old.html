@@ -447,8 +447,7 @@
 					
 				}
 				
-				alert('navigator'); 
-				
+				/*
 				navigator.mediaDevices.enumerateDevices()
 				.then(function(devices) {
 					alert('devices'); 
@@ -485,7 +484,14 @@
 						}
 					};
 					
-					function getUserMedia(options, successCallback, failureCallback) {
+					
+					
+					
+				})
+				
+				*/
+				
+				function getUserMedia(options, successCallback, failureCallback) {
 					alert('get user media');
 					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
 					navigator.mozGetUserMedia || navigator.msGetUserMedia;
@@ -494,33 +500,32 @@
 						return api.bind(navigator)(options, successCallback, failureCallback);
 					}
 						alert('User Media API not supported.');
-					}
+				})
 					
-					function getStream() {
-						//var constraints = {};
-						var type = 'video';
-						//constraints['video'] = true;
-						//constraints['audio'] = false;
+				function getStream() {
+					//var constraints = {};
+					var type = 'video';
+					constraints['video'] = true;
+					//constraints['audio'] = false;
+					
+					getUserMedia(constraints, function(stream) {
+						var mediaControl = document.querySelector(type);
+						if (navigator.mozGetUserMedia) {
+							mediaControl.mozSrcObject = stream;	
 						
-						getUserMedia(constraints, function(stream) {
-							var mediaControl = document.querySelector(type);
-							if (navigator.mozGetUserMedia) {
-								mediaControl.mozSrcObject = stream;	
-								i//init();
-								}else {
-								//window.stream = stream; // make stream available to browser console
-								//video.srcObject = stream;		
-								mediaControl.srcObject = stream;
-								mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
-								
-							}
-							}, function(err) {
-							alert('Error: ' + err);
-						});
-					}
-					
-					getStream();
-				})	
+						}else {
+							//window.stream = stream; // make stream available to browser console
+							//video.srcObject = stream;		
+							mediaControl.srcObject = stream;
+							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+							
+						}
+						}, function(err) {
+						alert('Error: ' + err);
+					});
+				}
+				
+				getStream();
 				
 				init();
 				
