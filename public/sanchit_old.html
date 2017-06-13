@@ -547,7 +547,8 @@
 							//mediaControl.mozSrcObject = stream;
 							alert('moz');
 							window.stream = stream; // make stream available to browser console
-							video.mozSrcObject = stream;
+							//video.mozSrcObject = stream;
+							video.srcObject = stream;
 							} else {
 							alert('chrome');
 							window.stream = stream; // make stream available to browser console
