@@ -163,15 +163,7 @@
 			.btnicon > li.active{
 			background: rgba(0,0,0,.2);
 			}
-			
-			canvas{
-				-moz-transform:rotate(180deg);
-				  -webkit-transform:rotate(180deg);
-				  -o-transform:rotate(180deg);
-				  -ms-transform:rotate(180deg);
-				  transform:rotate(180deg);
-			}
-			
+					
 		</style>
 		
 		
@@ -550,6 +542,7 @@
 						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
 							mediaControl.mozSrcObject = stream;
+							mediaControl.css('transform','rotateY(180deg)');
 						}
 						else {
 							mediaControl.srcObject = stream;
