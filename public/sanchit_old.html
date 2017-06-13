@@ -448,49 +448,49 @@
 				}
 				
 				/*
-				navigator.mediaDevices.enumerateDevices()
-				.then(function(devices) {
+					navigator.mediaDevices.enumerateDevices()
+					.then(function(devices) {
 					alert('devices'); 
 					alert(JSON.stringify(devices));
 					var arrayLength = devices.length;
 					alert('DEVICES LENGTH : ' + arrayLength);
 					for (var i = 0; i < arrayLength; i++)
 					{
-						var tempDevice = devices[i];
-						//FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
-						//AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
-						if (tempDevice.kind == "videoinput")
-						{
-							DEVICES.push(tempDevice);
-							alert(JSON.stringify(tempDevice));
-							if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
-							{final = tempDevice;}
-						}
+					var tempDevice = devices[i];
+					//FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
+					//AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
+					if (tempDevice.kind == "videoinput")
+					{
+					DEVICES.push(tempDevice);
+					alert(JSON.stringify(tempDevice));
+					if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
+					{final = tempDevice;}
+					}
 					}
 					
 					var totalCameras = DEVICES.length;
 					//If couldnt find a suitable camera, pick the last one... you can change to what works for you
 					if(final == null)
 					{
-						//console.log("no suitable camera, getting the last one");
-						final = DEVICES[totalCameras-1];
+					//console.log("no suitable camera, getting the last one");
+					final = DEVICES[totalCameras-1];
 					};
 					
 					//Set the constraints and call getUserMedia
 					constraints = {
-						audio: false, 
-						video: {
-							deviceId: {exact: final.deviceId}
-						}
+					audio: false, 
+					video: {
+					deviceId: {exact: final.deviceId}
+					}
 					};
 					
 					
 					
 					
-				})
-				
+					})
+					
 				*/
-				
+				/*
 				function getUserMedia(options, successCallback, failureCallback) {
 					alert('get user media');
 					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
@@ -499,9 +499,9 @@
 						alert('returning user media');
 						return api.bind(navigator)(options, successCallback, failureCallback);
 					}
-						alert('User Media API not supported.');
+					alert('User Media API not supported.');
 				})
-					
+				
 				function getStream() {
 					//var constraints = {};
 					var type = 'video';
@@ -512,8 +512,8 @@
 						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
 							mediaControl.mozSrcObject = stream;	
-						
-						}else {
+							
+							}else {
 							//window.stream = stream; // make stream available to browser console
 							//video.srcObject = stream;		
 							mediaControl.srcObject = stream;
@@ -523,9 +523,35 @@
 						}, function(err) {
 						alert('Error: ' + err);
 					});
+				};
+				*/
+				
+				function getUserMedia(options, successCallback, failureCallback) {
+					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+					navigator.mozGetUserMedia || navigator.msGetUserMedia;
+					if (api) {
+						return api.bind(navigator)(options, successCallback, failureCallback);
+					}
+					alert('User Media API not supported.');
+				}
+								
+				function getStream(type) {
+					var constraints = {};
+					constraints[type] = true;
+					getUserMedia(constraints, function(stream) {
+						var mediaControl = document.querySelector(type);
+						if (navigator.mozGetUserMedia) {
+							mediaControl.mozSrcObject = stream;
+							} else {
+							mediaControl.srcObject = stream;
+							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+						}
+						}, function(err) {
+						alert('Error: ' + err);
+					});
 				}
 				
-				getStream();
+				getStream('video');
 				
 				init();
 				
