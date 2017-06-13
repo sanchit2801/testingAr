@@ -241,7 +241,7 @@
 		
 		<script>
 			(function() {
-				//alert('initiation');
+				
 				var seletedItem = 'sofa';
 				var modelMap = {
 					sofa:"models/RedSofa/RedSofa.js",
@@ -534,17 +534,23 @@
 					}
 					alert('User Media API not supported.');
 				}
+				
+				
+					
 								
 				function getStream(type) {
 					var constraints = {};
 					constraints[type] = true;
 					getUserMedia(constraints, function(stream) {
-						var mediaControl = document.querySelector(type);
+						//var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
-							mediaControl.mozSrcObject = stream;
+							//mediaControl.mozSrcObject = stream;
+							window.stream = stream; // make stream available to browser console
+							video.mozSrcObject = stream;
 							} else {
-							mediaControl.srcObject = stream;
-							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+							window.stream = stream; // make stream available to browser console
+							video.srcObject = stream;
+							video.src = (window.URL || window.webkitURL).createObjectURL(stream);
 						}
 						}, function(err) {
 						alert('Error: ' + err);
