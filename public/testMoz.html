@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<title>WEB AR</title>
+		
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<script src="three.js"></script>
+		<script src="js/jquery-2.1.4.min.js"></script>
+		<script src="Detector.js"></script>
+		<script src="OrbitControls.js"></script>
+		<script src="OBJLoader.js"></script>
+		<script src="MTLLoader.js"></script>
+		<style>
+			body {
+			margin: 0px;
+			overflow: hidden;
+			}
+			#container{
+			margin-top: 50px;
+			overflow: hidden;
+			position: fixed;
+			}
+			.modal-content {
+			height: 100vh;
+			background: rgba(0, 0, 0, .5)
+			}
+			
+			.msgbox {
+			text-align: center;
+			font-family: arial;
+			font-weight: normal;
+			position: fixed;
+			transform: translate(50%, -50%);
+			width: 100%;
+			top: 40%;
+			right: 50%;
+			}
+			
+			.wrap-container {
+			display: flex;
+			justify-content: center;
+			width: 120px;
+			/* height: 500px; */
+			/* background: silver; */
+			margin: 0 auto;
+			}
+			
+			.buttonpad{
+			z-index: 9;
+			
+			width: 100%;
+			height:100%;
+			}
+			.buttonpad > input:nth-child(1){
+			margin: 0 auto;
+			top: 45%;
+			position: absolute;
+			left: 10px;
+			}
+			.buttonpad > input:nth-child(2){
+			width: 32px;
+			position: absolute;
+			top: 60px;
+			left: 45%;
+			margin: 0 auto;
+			
+			}
+			.buttonpad > input:nth-child(3){
+			margin: 0 auto;
+			bottom: 90px;
+			position: absolute;
+			left:45%;
+			
+			}
+			.buttonpad > input:nth-child(4){
+			width: 32px;
+			position: absolute;
+			top: 45%;
+			right: 10px;
+			margin: 0 auto;
+			}
+			
+			
+			
+			.buttonpad > input{
+			outline:0;
+			border: none;
+			background-color: transparent;
+			width: 36px;
+			height: 36px;
+			}
+			.buttonpad > input:focus {outline:0;}
+			canvas{
+			width: 100%;
+			height: 100%;
+			}
+			#leftButton{
+			background: url('controlButton/left-blue.png') center top no-repeat;
+			background-size: cover;
+			}
+			#upButton{
+			background: url('controlButton/up-blue.png') center top no-repeat;
+			background-size: cover;
+			}
+			#downButton{
+			background: url('controlButton/down-blue.png') center top no-repeat;
+			background-size: cover;
+			}
+			#rightButton{
+			background: url('controlButton/right-blue.png') center top no-repeat;
+			background-size: cover;
+			}
+			.adloidlogo{
+			z-index: 9;
+			position: absolute;
+			top: 0;
+			display: block;
+			width:100%;
+			float:left;
+			background:#fff;
+			height:50px;
+			text-align:center;
+			}
+			.adloidlogo > img{
+			
+			}
+			
+			.btnicon{
+			z-index: 9999;
+			position: absolute;
+			bottom: 0;
+			display: block;
+			width: 100%;
+			float: left;
+			background: #fff;
+			height: 70px;
+			
+			margin: 0;
+			padding: 0;
+			}
+			.btnicon > li{
+            float: left;
+            display: block;
+			
+            border: dashed 1px lightgrey;
+            margin: 0;
+            padding: 10px 0;
+            font-size: 50px;
+            text-align: center;
+            width: 25%;
+            list-style-type: none;
+            box-sizing: border-box;
+			}
+			
+			.btnicon > li > i{
+			font-size: 50px;
+			
+			}
+			
+			.btnicon > li.active{
+			background: rgba(0,0,0,.2);
+			}
+		</style>
+		
+		
+	</head>
+	<body>
+		
+		
+		
+		<div class="adloidlogo"> 
+			<img src="img/adloid-logo.jpg" height="50">
+		</div>
+		<div id="container"></div>
+		
+		
+		
+		<ul class="btnicon">
+			<li class="model active" id="sofa"> <img src="img/sofa.png"></li>
+			<li class="model" id="chair"> <img src="img/chair.png"></li>
+			<li class="model" id="armchair"> <img src="img/armchair.png"></li>
+			<li class="model" id="table"> <img src="img/table.png"></li>
+		</ul>
+		
+		<div class="wrap-container">
+			
+			
+			<div class="buttonpad">
+				<input type="button" id="leftButton" width="36" height="36">
+				<input type="button" id="upButton" width="36" height="36">
+				<input type="button" id="downButton" width="36" height="36">
+				<input type="button" id="rightButton" width="36" height="36">
+			</div>
+		</div>
+		
+		<div style="display:none" id="loading-wait">
+			<div class="modal-content no-padding">
+				<div class="msgbox">
+					
+					<h4> Sit back & Relax!! </h4>
+					
+					<p>While we are initializing setup for you </p>
+					
+					<p><!-- 6 -->
+						
+						<div class="" title="5">
+							<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px" height="30px" viewBox="0 0 24 30" style="enable-background:new 0 0 50 50;" xml:space="preserve">
+								<rect x="0" y="13" width="4" height="5" fill="#fff">
+									<animate attributeName="height" attributeType="XML"
+									values="5;21;5"
+									begin="0s" dur="0.6s" repeatCount="indefinite" />
+									<animate attributeName="y" attributeType="XML"
+									values="13; 5; 13"
+									begin="0s" dur="0.6s" repeatCount="indefinite" />
+								</rect>
+								<rect x="10" y="13" width="4" height="5" fill="#fff">
+									<animate attributeName="height" attributeType="XML"
+									values="5;21;5"
+									begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+									<animate attributeName="y" attributeType="XML"
+									values="13; 5; 13"
+									begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+								</rect>
+								<rect x="20" y="13" width="4" height="5" fill="#fff">
+									<animate attributeName="height" attributeType="XML"
+									values="5;21;5"
+									begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+									<animate attributeName="y" attributeType="XML"
+									values="13; 5; 13"
+									begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+								</rect>
+							</svg>
+						</div>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<script>
+			(function() {
+				alert('initiation');
+				var seletedItem = 'sofa';
+				var modelMap = {
+					sofa:"models/RedSofa/RedSofa.js",
+					armchair:"models/5June/SingleSofa/SingleSofa.js",
+					chair:"models/5June/Chair/chair.js",
+					table:"models/5June/Table/Table.js",
+					sofaBig:"models/BigSofa/sofa.js"
+				}
+				
+				video = document.createElement( 'video' );
+				video.id = 'monitor';
+				
+				video.width=0;
+				video.height=0;
+				document.body.appendChild(video)
+				
+				
+				
+				function handleSuccess(stream) {
+					window.stream = stream; // make stream available to browser console
+					video.srcObject = stream;
+				}
+				
+				function handleError(error) {
+					console.log('navigator.getUserMedia error: ', error);
+				}
+				
+				
+				
+				var DEVICES = [];
+				var final = null;
+				var constraints = {};
+				
+				
+				var container;
+				var camera, controls, scene, renderer;
+				var cross;
+				
+				//animate();
+				var object;
+				function init() {
+					camera = "";
+					controls = "";
+					renderer = "";
+					scene = "";
+					
+					camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1,3000 );
+					camera.position.z = 500;
+					
+					/*controls = new THREE.TrackballControls( camera );
+						controls.rotateSpeed = 1.0;
+						controls.zoomSpeed = 1.2;
+						controls.panSpeed = 0.8;
+						controls.noZoom = false;
+						controls.noPan = false;
+						controls.staticMoving = true;
+						controls.dynamicDampingFactor = 0.3;
+					controls.keys = [ 65, 83, 68 ];*/
+					
+					// world
+					
+					
+					scene = new THREE.Scene();
+					
+					var loader = new THREE.JSONLoader();
+					
+					// load a resource
+					$('#loading-wait').show();
+					loader.load(
+					
+					// resource URL
+					//'sofa/sofa.js',
+					modelMap[seletedItem],
+					// Function when resource is loaded
+					function ( geometry, materials ) {
+						
+						var material = materials[ 0 ];
+						object = new THREE.Mesh( geometry, material );
+						
+						scene.add( object );
+						/* Renderer */
+						// lights
+						
+						
+						ambient = new THREE.AmbientLight(0xffffff, 1.0);
+						scene.add(ambient);
+						
+						keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
+						keyLight.position.set(-100, 0, 100);
+						scene.add(keyLight);
+						
+						fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
+						fillLight.position.set(100, 0, 100);
+						scene.add(fillLight);
+						
+						backLight = new THREE.DirectionalLight(0xffffff, 1.0);
+						backLight.position.set(100, 0, -100).normalize();
+						scene.add(backLight);
+						renderer = new THREE.WebGLRenderer();
+						renderer.setPixelRatio(window.devicePixelRatio);
+						renderer.setSize(window.innerWidth, window.innerHeight);
+						renderer.setClearColor(0x333333);
+						
+						container = document.getElementById('container');
+						container.appendChild(renderer.domElement);
+						
+						camera.position.set(200, 180, 28);
+						
+						
+						controls = new THREE.OrbitControls(camera, renderer.domElement);
+						controls.target.set(0, 12, 0);
+						controls.minPolarAngle = (Math.PI - (Math.PI/4))/2;
+						//controls.minPolarAngle = (Math.PI) / 2;
+						controls.maxPolarAngle = (Math.PI + (Math.PI/4))/2;
+						//controls.maxPolarAngle = (Math.PI) / 2;
+						controls.update();
+						
+						
+						///////////
+						// VIDEO //
+						///////////
+						
+						
+						videoImage = document.createElement( 'canvas' );
+						
+						var r = 360/567.0;
+						var w = window.innerWidth;
+						var h = ((567/360)*w);
+						
+						var r1 = w/h;
+						videoImage.width = window.innerWidth;
+						videoImage.height = h;
+						videoImageContext = videoImage.getContext('2d');
+						console.log(w);
+						console.log(h);
+						videoImageContext = videoImage.getContext( '2d' );
+						// background color if no video present
+						videoImageContext.fillStyle = '#000000';
+						videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+						
+						videoTexture = new THREE.Texture( videoImage );
+						videoTexture.minFilter = THREE.LinearFilter;
+						videoTexture.magFilter = THREE.LinearFilter;
+						
+						movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture } );
+						// the geometry on which the movie will be displayed;
+						//      movie image will be scaled to fit these dimensions.
+						movieGeometry = new THREE.PlaneGeometry( 2,2,0 );
+						movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+						// movieScreen.position.set(0,50,0);
+						movieScreen.material.depthTest = false;
+						movieScreen.material.depthWrite = false;
+						
+						backgroundScene = new THREE.Scene();
+						backgroundCamera = new THREE.Camera();
+						
+						backgroundScene.add(backgroundCamera );
+						backgroundScene.add(movieScreen );
+						
+						//
+						window.addEventListener( 'resize', onWindowResize, false );
+						//
+						render();
+						animate();
+						$('#loading-wait').hide();
+						
+						if(window.innerHeight > h){
+							h = window.innerHeight;
+						}
+						$('canvas').css('height',h);
+						
+					})
+					
+				}
+				
+				function onWindowResize() {
+					
+					//camera.aspect = window.innerWidth / window.innerHeight;
+					//camera.updateProjectionMatrix();
+					//renderer.setSize( window.innerWidth, window.innerHeight );
+					//alert(camera.aspect);
+					//alert("window.innerWidth : " + window.innerWidth);
+					//alert("window.innerHeight : " + window.innerHeight);
+					
+					//controls.update();
+					
+					
+					for (var i = scene.children.length - 1; i >= 0 ; i--) {
+						var child = scene.children[ i ];
+						scene.remove(child);
+					}
+					
+					while (renderer.domElement.lastChild){ // `renderer` is stored earlier
+						renderer.domElement.removeChild(renderer.domElement.lastChild)
+					}
+					
+					renderer.clear();
+					while(container.firstChild) {
+						container.removeChild(container.firstChild);
+					}
+					
+					init();
+					
+				}
+				
+				alert('navigator'); 
+				
+				navigator.mediaDevices.enumerateDevices()
+				.then(function(devices) {
+					alert('devices'); 
+					alert(JSON.stringify(devices));
+					var arrayLength = devices.length;
+					alert('DEVICES LENGTH : ' + arrayLength);
+					for (var i = 0; i < arrayLength; i++)
+					{
+						var tempDevice = devices[i];
+						//FOR EACH DEVICE, PUSH TO DEVICES LIST THOSE OF KIND VIDEOINPUT (cameras)
+						//AND IF THE CAMERA HAS THE RIGHT FACEMODE ASSING IT TO "final"
+						if (tempDevice.kind == "videoinput")
+						{
+							DEVICES.push(tempDevice);
+							alert(JSON.stringify(tempDevice));
+							final = tempDevice;
+							/*if(tempDevice.facingMode == "environment" ||tempDevice.label.indexOf("facing back")>=0 )
+							{final = tempDevice;}
+							else{
+								
+							}
+							*/
+						}
+					}
+					
+					var totalCameras = DEVICES.length;
+					//If couldnt find a suitable camera, pick the last one... you can change to what works for you
+					/*if(final == null)
+					{
+						//console.log("no suitable camera, getting the last one");
+						final = DEVICES[totalCameras-1];
+					};
+					*/
+					//Set the constraints and call getUserMedia
+					constraints = {
+						audio: false, 
+						video: {
+							deviceId: {exact: final.deviceId}
+						}
+					};
+					
+					function getUserMedia(options, successCallback, failureCallback) {
+					alert('get user media');
+					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
+					navigator.mozGetUserMedia || navigator.msGetUserMedia;
+					if (api) {
+						alert('returning user media');
+						return api.bind(navigator)(options, successCallback, failureCallback);
+					}
+						alert('User Media API not supported.');
+					}
+					
+					function getStream() {
+						//var constraints = {};
+						var type = 'video';
+						//constraints['video'] = true;
+						//constraints['audio'] = false;
+						
+						getUserMedia(constraints, function(stream) {
+							var mediaControl = document.querySelector(type);
+							if (navigator.mozGetUserMedia) {
+								mediaControl.mozSrcObject = stream;	
+								i//init();
+								}else {
+								//window.stream = stream; // make stream available to browser console
+								//video.srcObject = stream;		
+								mediaControl.srcObject = stream;
+								mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+								
+							}
+							}, function(err) {
+							alert('Error: ' + err);
+						});
+					}
+					
+					getStream();
+				})	
+				
+				init();
+				
+				
+				function updateYPos() {
+					//var direction = new THREE.Vector3(0, .1, 0); // amount to move per frame
+					//object.position.add(direction);
+					//animate();
+				}
+				
+				var upClicked = false;
+				var downClicked = false;
+				var rightClicked = false;
+				var leftClicked = false;
+				
+				function animate() {
+					
+					if(upClicked){
+						var direction = new THREE.Vector3(0, 6, 0); // amount to move per frame
+						upClicked = false;
+						object.position.add(direction);
+					}
+					else if(downClicked){
+						var direction = new THREE.Vector3(0, -6, 0); // amount to move per frame
+						downClicked = false;
+						object.position.add(direction);
+					}
+					else if(leftClicked){
+						var direction = new THREE.Vector3(6, 0, 0); // amount to move per frame
+						leftClicked = false;
+						object.position.add(direction);
+					}
+					else if(rightClicked){
+						console.log('right');
+						var direction = new THREE.Vector3(-6, 0, 0); // amount to move per frame
+						rightClicked = false;
+						object.position.add(direction);
+						}else{
+						
+					}
+					
+					requestAnimationFrame(animate);
+					render();
+					controls.update();
+					
+				}
+				
+				function render() {
+					if (renderer) {
+						renderer.clear();
+					}
+					
+					if (video.readyState === video.HAVE_ENOUGH_DATA) {
+						//console.log(video);
+						videoImageContext.drawImage(video,0, 0);
+						
+						if (videoTexture)
+						videoTexture.needsUpdate = true;
+					}
+					
+					renderer.autoClear = false;
+					renderer.render(backgroundScene, backgroundCamera);
+					renderer.render(scene, camera);
+					
+				}
+				
+				var upTimer;
+				var downTimer;
+				var leftTimer;
+				var rightTimer;
+				
+				$('#upButton').on('touchstart mousedown', function () {
+					upClicked = true;
+					upTimer = setInterval(function () {
+						console.log('up --> mousedown');
+						upClicked = true;
+						animate();
+					}, 500);
+				});
+				
+				$('#upButton').on('touchend mouseup', function () {
+					console.log('s1');
+					upClicked = false;
+					clearInterval(upTimer);
+				});
+				
+				$('#downButton').on('touchstart mousedown', function () {
+					console.log('s');
+					downClicked = true;
+					downTimer = setInterval(function () {
+						downClicked = true;
+						animate();
+					}, 500);
+					
+					
+				});
+				
+				$('#downButton').on('touchend mouseup', function () {
+					console.log('s1');
+					downClicked = false;
+					clearInterval(downTimer);
+				});
+				
+				$('#leftButton').on('touchstart mousedown', function () {
+					console.log('s');
+					leftClicked = true;
+					leftTimer = setInterval(function () {
+						leftClicked = true;
+						animate();
+					}, 500);
+					
+					
+				});
+				
+				$('#leftButton').on('touchend mouseup', function () {
+					console.log('s1');
+					leftClicked = false;
+					clearInterval(leftTimer);
+				});
+				
+				$('#rightButton').on('touchstart mousedown', function () {
+					console.log('s');
+					rightClicked = true;
+					rightTimer = setInterval(function () {
+						rightClicked = true;
+						animate();
+					},500);
+					
+					
+				});
+				
+				$('#rightButton').on('touchend mouseup', function () {
+					console.log('s1');
+					rightClicked = false;
+					clearInterval(rightTimer);
+				});
+				
+				
+				function triggerArrowKeys(val) {
+					leftArrowKey = 37
+					upArrowKey = 38
+					rightArrowKey = 39
+					downArrowKey = 40
+					
+					e = jQuery.Event("keydown");
+					e.which = val;
+					$('#container').trigger(e);
+				}
+				
+				$(document).on('click','.model',function(evt){
+					var clickedBtnID = $(this).attr('id');
+					console.log(clickedBtnID);
+					seletedItem = clickedBtnID;
+					$(document).find('.active').removeClass('active');
+					$(document).find('#'+clickedBtnID).addClass('active');
+					onWindowResize();
+				});
+				
+			})();
+			
+			
+		</script>
+		
+	</body>
+</html>						
