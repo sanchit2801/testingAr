@@ -367,25 +367,18 @@
 						var r1 = w/h;
 						videoImage.width = window.innerWidth;
 						videoImage.height = h;
-						videoImageContext = videoImage.getContext('2d');
 						console.log(w);
 						console.log(h);
 						videoImageContext = videoImage.getContext( '2d' );
-						// background color if no video present
 						videoImageContext.fillStyle = '#000000';
 						videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
-						
 						videoTexture = new THREE.Texture( videoImage );
 						videoTexture.minFilter = THREE.LinearFilter;
 						videoTexture.magFilter = THREE.LinearFilter;
 						
 						movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture } );
-						// the geometry on which the movie will be displayed;
-						//      movie image will be scaled to fit these dimensions.
 						movieGeometry = new THREE.PlaneGeometry( 2,2,0 );
-						//movieGeometry.rotation.x = - 180 * ( Math.PI / 180 );
 						movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
-						// movieScreen.position.set(0,50,0);
 						movieScreen.material.depthTest = false;
 						movieScreen.material.depthWrite = false;
 						
@@ -542,7 +535,7 @@
 						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
 							mediaControl.mozSrcObject = stream;
-							mediaControl.css('transform','rotateY(180deg)');
+							//mediaControl.css('transform','rotateY(180deg)');
 						}
 						else {
 							mediaControl.srcObject = stream;
@@ -587,6 +580,9 @@
 					
 					if (video.readyState === video.HAVE_ENOUGH_DATA) {
 						videoImageContext.drawImage(video,0, 0);
+						if(moz == 1){
+							videoImageContext.rotate(-(Math.PI));						
+						}
 						if (videoTexture)
 							videoTexture.needsUpdate = true;
 					}
