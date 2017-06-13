@@ -545,9 +545,11 @@
 						//var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
 							//mediaControl.mozSrcObject = stream;
+							alert('moz');
 							window.stream = stream; // make stream available to browser console
 							video.mozSrcObject = stream;
 							} else {
+							alert('chrome');
 							window.stream = stream; // make stream available to browser console
 							video.srcObject = stream;
 							video.src = (window.URL || window.webkitURL).createObjectURL(stream);
