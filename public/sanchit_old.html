@@ -482,39 +482,39 @@
 					
 				*/
 				/*
-				function getUserMedia(options, successCallback, failureCallback) {
+					function getUserMedia(options, successCallback, failureCallback) {
 					alert('get user media');
 					var api = navigator.getUserMedia || navigator.webkitGetUserMedia ||
 					navigator.mozGetUserMedia || navigator.msGetUserMedia;
 					if (api) {
-						alert('returning user media');
-						return api.bind(navigator)(options, successCallback, failureCallback);
+					alert('returning user media');
+					return api.bind(navigator)(options, successCallback, failureCallback);
 					}
 					alert('User Media API not supported.');
-				})
-				
-				function getStream() {
+					})
+					
+					function getStream() {
 					//var constraints = {};
 					var type = 'video';
 					constraints['video'] = true;
 					//constraints['audio'] = false;
 					
 					getUserMedia(constraints, function(stream) {
-						var mediaControl = document.querySelector(type);
-						if (navigator.mozGetUserMedia) {
-							mediaControl.mozSrcObject = stream;	
-							
-							}else {
-							//window.stream = stream; // make stream available to browser console
-							//video.srcObject = stream;		
-							mediaControl.srcObject = stream;
-							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
-							
-						}
-						}, function(err) {
-						alert('Error: ' + err);
+					var mediaControl = document.querySelector(type);
+					if (navigator.mozGetUserMedia) {
+					mediaControl.mozSrcObject = stream;	
+					
+					}else {
+					//window.stream = stream; // make stream available to browser console
+					//video.srcObject = stream;		
+					mediaControl.srcObject = stream;
+					mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
+					
+					}
+					}, function(err) {
+					alert('Error: ' + err);
 					});
-				};
+					};
 				*/
 				
 				function getUserMedia(options, successCallback, failureCallback) {
@@ -527,39 +527,32 @@
 				}
 				
 				
-					
-								
+				
+				
 				function getStream(type) {
 					var constraints = {};
 					constraints[type] = true;
 					getUserMedia(constraints, function(stream) {
-						//var mediaControl = document.querySelector(type);
+						
+						var mediaControl = document.querySelector(type);
 						if (navigator.mozGetUserMedia) {
-							//mediaControl.mozSrcObject = stream;
-							alert('moz');
-							window.stream = stream; // make stream available to browser console
-							video.mozSrcObject = stream;
-							//video.srcObject = stream;
-							//video.src = (window.URL || window.webkitURL).createObjectURL(stream);
-
-						} else {
-							//alert('chrome');
-							window.stream = stream; // make stream available to browser console
-							video.srcObject = stream;
-							video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+							mediaControl.mozSrcObject = stream;
+						}else {
+							mediaControl.srcObject = stream;
+							mediaControl.src = (window.URL || window.webkitURL).createObjectURL(stream);
 						}
 						init();
-						}, function(err) {
-						alert('Error: ' + err);
-					});
-				}
-				
-				getStream('video');
-				
-			
-				
-				
-				function updateYPos() {
+					},function(err) {
+							alert('Error: ' + err);
+						});
+					};
+					
+					getStream('video');
+					
+					
+					
+					
+					function updateYPos() {
 					//var direction = new THREE.Vector3(0, .1, 0); // amount to move per frame
 					//object.position.add(direction);
 					//animate();
